@@ -9,17 +9,14 @@ class Contact():
     def newContact(self, name, phone, email):
         try:
             with open("contacts.json", "r") as f:
-                loaded_data = json.load(f)
-        except FileNotFoundError:
+                existing_contacts = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
             existing_contacts = {}
         contact = Contact(name, phone, email)
-        contact_data = {
-            "name": contact.name,
-            "phone": contact.phone,
-            "email": contact.email
-        }
+        
+        existing_contacts[name]= {"phone": phone, "email": email}
         with open("contacts.json", "w") as f:
-            json.dump(contact_data, f)
+            json.dump(existing_contacts, f)
             return f"Contact {contact.name} saved successfully."
 
         def findContact(self, name):
@@ -39,5 +36,3 @@ email = input("Enter your email: ")
 
 add_contact = Contact(name, phone, email)
 print(add_contact.newContact(name, phone, email))
-
-

@@ -19,20 +19,28 @@ class Contact():
             json.dump(existing_contacts, f)
             return f"Contact {contact.name} saved successfully."
 
-        def findContact(self, name):
-            try:
-                with open("contacts.json", "r") as f:
-                    loaded_data = json.load(f)
-                    if  findContact.name == {name}:
-                        return f"Contact {name} found: {loaded_data}"
-            except:
-                print("Contact not found")
-            print(loaded_data)
+    def findContact(self, name):
+        try:
+            with open("contacts.json", "r") as f:
+                loaded_data = json.load(f)
+                return f"Contact {name} found: {loaded_data.get(name, 'Not found')}"
+        except(FileNotFoundError, json.JSONDecodeError):
+            print("Contact not found")
+        
 
 
-name = input("Enter your name: ")
-phone = input("Enter your phone number: ")
-email = input("Enter your email: ")
 
-add_contact = Contact(name, phone, email)
-print(add_contact.newContact(name, phone, email))
+new = input("Do you want to add a new contact or search for a contact? (add/search): ")
+if new == "add":
+    name = input("Enter your name: ")
+    phone = input("Enter your phone number: ")
+    email = input("Enter your email: ")
+
+    add_contact = Contact(name, phone, email)
+    print(add_contact.newContact(name, phone, email))
+elif new == "search":
+    name = input("Enter the name of the contact you want to search for: ")
+    search_contact = Contact(name, "", "")
+    print(search_contact.findContact(name))
+else:
+    print(" Invalid input. Please enter 'add' or 'search'.")
